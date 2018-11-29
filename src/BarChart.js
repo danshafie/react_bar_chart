@@ -32,7 +32,6 @@ class BarChart extends Component {
   createGraph() {
     const { width, height } = this.props;
     const { reducedArr } = this.state;
-    console.log("create graph: ", reducedArr);
 
     const svg = d3
       .select(".canvas")

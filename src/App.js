@@ -23,9 +23,14 @@ class App extends Component {
   }
 
   setTeam() {
+    const teamName = document.querySelector("#team_name").value;
+    // console.log("teamName", teamName.value);
+
     const selectedTeamData = this.state.data.filter(
-      d => d.teamName === this.state.selectedTeam
+      d => d.teamName.toLowerCase() === teamName.toLowerCase()
     );
+    // console.log("selectedTeamData in set team: ", selectedTeamData);
+
     this.setState({ selectedTeamData });
   }
 
@@ -35,6 +40,7 @@ class App extends Component {
   };
   render() {
     const { data, selectedTeam, selectedTeamData } = this.state;
+    // console.log("state in set team: ", this.state);
 
     return (
       <div className="App">
@@ -51,13 +57,7 @@ class App extends Component {
                 <div className="card-content">
                   <span className="card-title indigo-text">Search Team:</span>
                   <div className="input-field">
-                    <input
-                      type="text"
-                      id="name"
-                      onChange={e =>
-                        this.setState({ selectedTeam: e.target.value })
-                      }
-                    />
+                    <input type="text" id="team_name" />
                     <label htmlFor="name">Team Name</label>
                   </div>
                   <div className="input-field center">
