@@ -1,47 +1,29 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 
-const NBASTATS = ["orebRank", "ftaRank", "fg3PctRank", "plusMinusRank"];
-
 class BarChart extends Component {
   state = {
-    reducedArr: []
+    count: 0
   };
 
   componentDidMount() {
-    this.cleanData();
+    this.createGraph();
   }
 
-  componentWillReceiveProps() {
-    this.cleanData();
-  }
+  componentWillReceiveProps() {}
 
-  cleanData() {
-    const reducedArr = NBASTATS.reduce((acc, line) => {
-      let object = {};
-      if (this.props.selectedTeamData[0][line]) {
-        object["name"] = line;
-        object["value"] = this.props.selectedTeamData[0][line];
-        acc.push(object);
-      }
-      return acc;
-    }, []);
-
-    this.setState({ reducedArr }, () => this.createGraph());
-  }
   createGraph() {
-    const { width, height } = this.props;
-    const { reducedArr } = this.state;
+    const { width, height, teamStats } = this.props;
 
-    const svg = d3
-      .select(".canvas")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height);
     const margin = { top: 20, right: 20, bottom: 100, left: 100 };
     const graphWidth = width - margin.left - margin.right;
     const graphHeight = height - margin.top - margin.bottom;
     const t = d3.transition().duration(500);
+    const svg = d3
+      .select(".canvas")
+      .append("svg")
+      .attr("width", 600)
+      .attr("height", 600);
     const colors = d3
       .scaleLinear()
       .domain([30, 0])
@@ -54,17 +36,17 @@ class BarChart extends Component {
 
     const x = d3
       .scaleBand()
-      .domain(reducedArr.map(d => d.name))
+      .domain(teamStats.map(d => d.name))
       .range([0, graphWidth])
       .paddingInner(0.2)
       .paddingOuter(0.2);
 
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(reducedArr, d => d.value)])
+      .domain([0, d3.max(teamStats, d => d.value)])
       .range([0, graphHeight]);
 
-    const rects = graph.selectAll("rect").data(reducedArr);
+    const rects = graph.selectAll("rect").data(teamStats);
 
     rects.exit().remove();
 
@@ -106,7 +88,7 @@ class BarChart extends Component {
   }
 
   render() {
-    console.log("state in bar chart: ", this.state);
+    console.log("state: ", this.state);
 
     return (
       <div className="bar-chart">

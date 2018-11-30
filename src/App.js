@@ -2,24 +2,19 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import BarChart from "./BarChart";
-//use some kind of css styling
-//get data
-//make axis component
-//make bar chart component
 
-//have some kind of input field so user can search team
+const NBASTATS = ["orebRank", "ftaRank", "fg3PctRank", "plusMinusRank"];
 
 class App extends Component {
   state = {
     data: [],
-    selectedTeam: "",
-    selectedTeamData: []
+    teamName: "",
+    selectedTeamData: [],
+    teamStats: []
   };
   async componentDidMount() {
     const { data } = await axios.get("http://localhost:3000/");
-    this.setState(data, () => {
-      this.setTeam();
-    });
+    this.setState(data);
   }
 
   setTeam() {
@@ -29,9 +24,25 @@ class App extends Component {
     const selectedTeamData = this.state.data.filter(
       d => d.teamName.toLowerCase() === teamName.toLowerCase()
     );
-    // console.log("selectedTeamData in set team: ", selectedTeamData);
+    const teamStats = NBASTATS.reduce((acc, line) => {
+      let object = {};
 
-    this.setState({ selectedTeamData });
+      object["name"] = line;
+      object["value"] = selectedTeamData[0][line];
+      acc.push(object);
+
+      return acc;
+    }, []);
+    // console.log("selectedTeamData in set team: ", selectedTeamData);
+    // console.log("selected team data: ", selectedTeamData);
+    // console.log("teamStats", teamStats);
+    // console.log("selectedTeamData[0].teamName", selectedTeamData[0].teamName);
+
+    this.setState({
+      selectedTeamData,
+      teamStats,
+      teamName: selectedTeamData[0].teamName
+    });
   }
 
   handeClick = e => {
@@ -39,7 +50,7 @@ class App extends Component {
     this.setTeam();
   };
   render() {
-    const { data, selectedTeam, selectedTeamData } = this.state;
+    const { teamName, selectedTeamData, teamStats } = this.state;
     // console.log("state in set team: ", this.state);
 
     return (
@@ -76,13 +87,15 @@ class App extends Component {
             </div>
             <div className="col s12 m5 push-m1">
               {selectedTeamData.length > 0 && (
+                // <svg width="100%" height="600">
                 <BarChart
-                  data={data}
                   width={600}
                   height={600}
-                  selectedTeam={selectedTeam}
+                  teamName={teamName}
                   selectedTeamData={selectedTeamData}
+                  teamStats={teamStats}
                 />
+                // </svg>
               )}
             </div>
           </div>
