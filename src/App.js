@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
+import * as d3 from "d3";
 import BarChart from "./BarChart";
+import BarChartStore from "./BarChartStore";
 
 const NBASTATS = ["orebRank", "ftaRank", "fg3PctRank", "plusMinusRank"];
 
@@ -15,6 +17,20 @@ class App extends Component {
   async componentDidMount() {
     const { data } = await axios.get("http://localhost:3000/");
     this.setState(data);
+    // const margin = { top: 20, right: 20, bottom: 100, left: 100 };
+    // const graphWidth = 600 - margin.left - margin.right;
+    // const graphHeight = 600 - margin.top - margin.bottom;
+    // const svg = d3
+    //   .select(".canvas")
+    //   .append("svg")
+    //   .attr("width", 600)
+    //   .attr("height", 600);
+
+    // const graph = svg
+    //   .append("g")
+    //   .attr("width", graphWidth)
+    //   .attr("height", graphHeight)
+    //   .attr("transform", `translate(${margin.left}, ${margin.top})`);
   }
 
   setTeam() {
@@ -24,6 +40,7 @@ class App extends Component {
     const selectedTeamData = this.state.data.filter(
       d => d.teamName.toLowerCase() === teamName.toLowerCase()
     );
+
     const teamStats = NBASTATS.reduce((acc, line) => {
       let object = {};
 
@@ -33,10 +50,6 @@ class App extends Component {
 
       return acc;
     }, []);
-    // console.log("selectedTeamData in set team: ", selectedTeamData);
-    // console.log("selected team data: ", selectedTeamData);
-    // console.log("teamStats", teamStats);
-    // console.log("selectedTeamData[0].teamName", selectedTeamData[0].teamName);
 
     this.setState({
       selectedTeamData,
@@ -87,15 +100,15 @@ class App extends Component {
             </div>
             <div className="col s12 m5 push-m1">
               {selectedTeamData.length > 0 && (
-                // <svg width="100%" height="600">
-                <BarChart
-                  width={600}
-                  height={600}
-                  teamName={teamName}
-                  selectedTeamData={selectedTeamData}
-                  teamStats={teamStats}
-                />
-                // </svg>
+                <svg width="600" height="600" className="svg">
+                  <BarChart
+                    width={600}
+                    height={600}
+                    teamName={teamName}
+                    selectedTeamData={selectedTeamData}
+                    teamStats={teamStats}
+                  />
+                </svg>
               )}
             </div>
           </div>
