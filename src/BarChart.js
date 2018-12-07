@@ -19,9 +19,30 @@ class BarChart extends Component {
       .range(["red", "green"])
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    setTimeout(() => {
+      const { x, y } = this.state;
+      const graph = d3.select(".barchart_group");
+      const xAxisGroup = graph
+        .append("g")
+        .attr("transform", `translate(0, 600)`);
+      const yAxisGroup = graph.append("g");
+      const xAxis = d3.axisBottom(x);
+      const yAxis = d3
+        .axisLeft(y)
+        .tickFormat(d => d)
+        .ticks(5);
+      xAxisGroup.call(xAxis);
+      yAxisGroup.call(yAxis);
+    }, 100);
+  }
 
-  componentWillReceiveProps() {}
+  componentWillReceiveProps() {
+    setTimeout(() => {
+      const graph = d3.selectAll("rect");
+      console.log("graph in cwrp: ", graph);
+    }, 1000);
+  }
 
   // createGraph() {
   //   const { width, height, teamStats } = this.props;
@@ -103,9 +124,20 @@ class BarChart extends Component {
     console.log("state: ", this.state);
     const { x, y, colors } = this.state;
     const { teamStats } = this.props;
+    console.log("d3 select: ", d3.select(".barchart_group"));
+
+    const svg = d3.select(".barchart_group");
+    console.log("svg: ", svg);
+    setTimeout(() => {
+      const allbars = d3.selectAll(".bar_bitch");
+      console.log("allbars", allbars);
+    }, 2000);
+
     return (
-      <g>
-        {teamStats.map(d => {
+      <g className="barchart_group" transform={`translate(20, 20)`}>
+        {teamStats.map((d, i) => {
+          console.log("yvalue: ", 600 - y(d.value));
+
           return (
             <rect
               x={x(d.name)}
@@ -113,6 +145,8 @@ class BarChart extends Component {
               height={600 - y(d.value)}
               fill={colors(d.value)}
               width={x.bandwidth()}
+              key={i}
+              className="bar"
             />
           );
         })}

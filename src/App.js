@@ -100,7 +100,7 @@ class App extends Component {
             </div>
             <div className="col s12 m5 push-m1">
               {selectedTeamData.length > 0 && (
-                <svg width="600" height="600" className="svg">
+                <svg width="600" height="700" className="svg">
                   <BarChart
                     width={600}
                     height={600}
