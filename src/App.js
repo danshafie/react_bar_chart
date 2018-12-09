@@ -34,8 +34,9 @@ class App extends Component {
     //   .attr("transform", `translate(${margin.left}, ${margin.top})`);
   }
 
-  setTeam() {
-    const teamName = document.querySelector("#team_name").value;
+  setTeam(team = {}) {
+    const teamName =
+      team.teamName || document.querySelector("#team_name").value;
     // console.log("teamName", teamName.value);
 
     const selectedTeamData = this.state.data.filter(
@@ -57,6 +58,7 @@ class App extends Component {
       teamStats,
       teamName: selectedTeamData[0].teamName
     });
+    document.querySelector(".form_input").reset();
   }
 
   createList() {
@@ -71,6 +73,7 @@ class App extends Component {
             className={`plus_minus_rank ${
               item.teamName === this.state.teamName ? "active" : ""
             }`}
+            onClick={() => this.setTeam(item)}
           >
             {item.teamName} - {item.plusMinusRank}
           </li>
@@ -97,7 +100,7 @@ class App extends Component {
         <div className="container section">
           <div className="row">
             <div className="col s12 m6">
-              <form className="card z-depth-0">
+              <form className="card z-depth-0 form_input">
                 <div className="card-content">
                   <span className="card-title indigo-text">Search Team:</span>
                   <div className="input-field">

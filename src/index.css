@@ -14,7 +14,7 @@ code {
 }
 
 .plus_minus_wrapper {
-  font-size: 16px;
+  font-size: 17px;
   background-color: rgba(200, 185, 195, 0.5);
   padding: 10px 0px;
 }
@@ -22,6 +22,15 @@ code {
 .plus_minus_rank {
   text-align: center;
   list-style-type: none;
+  transition: all 0.3s ease;
+  transform: scale(0.9);
+  cursor: pointer;
+  font-family: fantasy;
+}
+
+.plus_minus_rank:hover {
+  transform: scale(1);
+  box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
 }
 
 .plus_minus_rank.active {
