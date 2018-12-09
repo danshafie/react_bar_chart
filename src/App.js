@@ -17,6 +17,7 @@ class App extends Component {
   async componentDidMount() {
     const { data } = await axios.get("http://localhost:3000/");
     this.setState(data);
+
     // const margin = { top: 20, right: 20, bottom: 100, left: 100 };
     // const graphWidth = 600 - margin.left - margin.right;
     // const graphHeight = 600 - margin.top - margin.bottom;
@@ -58,13 +59,32 @@ class App extends Component {
     });
   }
 
+  createList() {
+    const { data } = this.state;
+    return data
+      .sort((a, b) => {
+        return b.plusMinus - a.plusMinus;
+      })
+      .map(item => {
+        return (
+          <li
+            className={`plus_minus_rank ${
+              item.teamName === this.state.teamName ? "active" : ""
+            }`}
+          >
+            {item.teamName} - {item.plusMinusRank}
+          </li>
+        );
+      });
+  }
+
   handeClick = e => {
     e.preventDefault();
     this.setTeam();
   };
   render() {
     const { teamName, selectedTeamData, teamStats } = this.state;
-    // console.log("state in set team: ", this.state);
+    console.log("state: ", this.state);
 
     return (
       <div className="App">
@@ -97,6 +117,13 @@ class App extends Component {
                   </div>
                 </div>
               </form>
+              {teamName && (
+                <React.Fragment>
+                  <h3>{teamName}</h3>
+                  <h5>Team Plus Minus (in order)</h5>
+                  <ul className="plus_minus_wrapper">{this.createList()}</ul>
+                </React.Fragment>
+              )}
             </div>
             <div className="col s12 m5 push-m1">
               {selectedTeamData.length > 0 && (

@@ -12,3 +12,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.plus_minus_wrapper {
+  font-size: 16px;
+  background-color: rgba(200, 185, 195, 0.5);
+  padding: 10px 0px;
+}
+
+.plus_minus_rank {
+  text-align: center;
+  list-style-type: none;
+}
+
+.plus_minus_rank.active {
+  background-color: yellow;
+  color: red;
+}

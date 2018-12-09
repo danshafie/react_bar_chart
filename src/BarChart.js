@@ -40,7 +40,6 @@ class BarChart extends Component {
   componentWillReceiveProps() {
     setTimeout(() => {
       const graph = d3.selectAll("rect");
-      console.log("graph in cwrp: ", graph);
     }, 1000);
   }
 
@@ -124,10 +123,9 @@ class BarChart extends Component {
     console.log("state: ", this.state);
     const { x, y, colors } = this.state;
     const { teamStats } = this.props;
-    console.log("d3 select: ", d3.select(".barchart_group"));
 
     const svg = d3.select(".barchart_group");
-    console.log("svg: ", svg);
+
     setTimeout(() => {
       const allbars = d3.selectAll(".bar_bitch");
       console.log("allbars", allbars);
@@ -136,8 +134,6 @@ class BarChart extends Component {
     return (
       <g className="barchart_group" transform={`translate(20, 20)`}>
         {teamStats.map((d, i) => {
-          console.log("yvalue: ", 600 - y(d.value));
-
           return (
             <rect
               x={x(d.name)}
