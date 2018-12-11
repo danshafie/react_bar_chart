@@ -11,7 +11,7 @@ class BarChart extends Component {
       .paddingOuter(0.2),
     y: d3
       .scaleLinear()
-      .domain([0, d3.max(this.props.teamStats, d => d.value)])
+      .domain([0, 30])
       .range([0, 600]),
     colors: d3
       .scaleLinear()
@@ -119,8 +119,6 @@ class BarChart extends Component {
   // }
 
   render() {
-    console.log("props: ", this.props);
-    console.log("state: ", this.state);
     const { x, y, colors } = this.state;
     const { teamStats } = this.props;
 
@@ -128,7 +126,6 @@ class BarChart extends Component {
 
     setTimeout(() => {
       const allbars = d3.selectAll(".bar_bitch");
-      console.log("allbars", allbars);
     }, 2000);
 
     return (
