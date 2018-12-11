@@ -124,9 +124,9 @@ class BarChart extends Component {
 
     const svg = d3.select(".barchart_group");
 
-    setTimeout(() => {
-      const allbars = d3.selectAll(".bar_bitch");
-    }, 2000);
+    // setTimeout(() => {
+    //   const allbars = d3.selectAll(".bar_bitch");
+    // }, 2000);
 
     return (
       <g className="barchart_group" transform={`translate(20, 20)`}>

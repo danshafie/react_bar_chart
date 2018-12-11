@@ -4,6 +4,7 @@ import axios from "axios";
 import * as d3 from "d3";
 import BarChart from "./BarChart";
 import BarChartStore from "./BarChartStore";
+import LineGraph from "./LineGraph";
 
 const NBASTATS = [
   "orebRank",
@@ -22,7 +23,9 @@ class App extends Component {
     error: false,
     daysRestedStats: {},
     teamId: "",
-    fetching: false
+    fetching: false,
+    playerName: "",
+    playerStats: []
   };
   async componentDidMount() {
     const { data } = await axios.get("/allTeams");
@@ -121,6 +124,17 @@ class App extends Component {
     this.setTeam();
   };
 
+  handleSearchPlayer = e => {
+    const { playerName } = this.state;
+    e.preventDefault();
+    axios.post("/playerStats", { playerName }).then(response => {
+      const {
+        data: { playerStats }
+      } = response;
+      this.setState({ playerStats });
+    });
+  };
+
   daysRest(daysRested) {
     const team = this.state.selectedTeamData[0].teamId;
     this.setState({ fetching: true });
@@ -144,7 +158,9 @@ class App extends Component {
       teamStats,
       error,
       daysRestedStats,
-      diffTeam
+      diffTeam,
+      playerName,
+      playerStats
     } = this.state;
 
     console.log("state: ", this.state);
@@ -245,6 +261,45 @@ class App extends Component {
                   {this.createDaysRestedDiv()}
                 </React.Fragment>
               )}
+            </div>
+            <div className="player-search col s12 col m9">
+              <form className="card z-depth-0 form_input">
+                <div className="card-content">
+                  <span className="card-title indigo-text">Search player:</span>
+                  <div className="input-field">
+                    <input
+                      type="text"
+                      id="player_name"
+                      onChange={e =>
+                        this.setState({ playerName: e.target.value })
+                      }
+                    />
+                    <label htmlFor="name">Player Name</label>
+                  </div>
+                  <div className="input-field center">
+                    <button
+                      className="btn-large blue white-text"
+                      onClick={this.handleSearchPlayer}
+                      value={playerName}
+                    >
+                      Search player
+                    </button>
+                  </div>
+                  <div className="input-field center">
+                    {error && (
+                      <p id="error" className="red-text">
+                        please type in a player
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </form>
+              {playerStats.seasonTotalsRegularSeason &&
+              playerStats.seasonTotalsRegularSeason.length > 0 ? (
+                <svg width="560" height="400">
+                  <LineGraph data={playerStats} />
+                </svg>
+              ) : null}
             </div>
           </div>
         </div>
