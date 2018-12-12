@@ -296,7 +296,7 @@ class App extends Component {
               </form>
               {playerStats.seasonTotalsRegularSeason &&
               playerStats.seasonTotalsRegularSeason.length > 0 ? (
-                <svg width="560" height="400">
+                <svg width="700" height="520">
                   <LineGraph data={playerStats} />
                 </svg>
               ) : null}
