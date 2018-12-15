@@ -17,6 +17,7 @@ code {
   font-size: 17px;
   background-color: rgba(200, 185, 195, 0.5);
   padding: 10px 0px;
+  box-shadow: 8px 11px 23px 1px rgba(168, 151, 168, 1);
 }
 
 .plus_minus_rank {
@@ -50,6 +51,7 @@ code {
   transition: all 0.3s ease;
   padding: 15px 32px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: none;
 }
 
 .days-rest-button:hover {

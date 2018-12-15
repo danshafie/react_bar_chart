@@ -8,7 +8,9 @@ import LineGraph from "./LineGraph";
 
 const NBASTATS = [
   "orebRank",
+  "drebRank",
   "ftaRank",
+  "fgPctRank",
   "fg3PctRank",
   "tovRank",
   "plusMinusRank"
@@ -42,7 +44,7 @@ class App extends Component {
       team.teamName || document.querySelector("#team_name").value;
     // console.log("teamName", teamName.value);
 
-    const selectedTeamData = this.state.data.filter(
+    const selectedTeamData = this.state.data[0].filter(
       d => d.teamName.toLowerCase() === teamName.toLowerCase()
     );
 
@@ -61,17 +63,28 @@ class App extends Component {
       return acc;
     }, []);
 
-    this.setState({
-      selectedTeamData,
-      teamStats,
-      teamName: selectedTeamData[0].teamName,
-      error: false
-    });
+    this.setState(
+      {
+        selectedTeamData,
+        teamStats,
+        teamName: selectedTeamData[0].teamName,
+        error: false
+      },
+      () => {
+        console.log("state in cb: ", this.state.selectedTeamData[0].teamId);
+        const teamId = this.state.selectedTeamData[0].teamId;
+        console.log("teamid:", teamId);
+
+        axios.post("/teamSplits", { teamId }).then(dataBack => {
+          console.log("data back: ", dataBack);
+        });
+      }
+    );
     document.querySelector(".form_input").reset();
   }
 
   createList() {
-    const { data } = this.state;
+    const data = this.state.data[0];
     return data
       .sort((a, b) => {
         return b.plusMinus - a.plusMinus;
@@ -262,7 +275,7 @@ class App extends Component {
                 </React.Fragment>
               )}
             </div>
-            <div className="player-search col s12 col m9">
+            {/* <div className="player-search col s12 col m9">
               <form className="card z-depth-0 form_input">
                 <div className="card-content">
                   <span className="card-title indigo-text">Search player:</span>
@@ -296,11 +309,11 @@ class App extends Component {
               </form>
               {playerStats.seasonTotalsRegularSeason &&
               playerStats.seasonTotalsRegularSeason.length > 0 ? (
-                <svg width="700" height="520">
-                  <LineGraph data={playerStats} />
-                </svg>
-              ) : null}
-            </div>
+                // <svg width="700" height="520">
+                <LineGraph data={playerStats} />
+              ) : // </svg>
+              null}
+            </div> */}
           </div>
         </div>
       </div>
